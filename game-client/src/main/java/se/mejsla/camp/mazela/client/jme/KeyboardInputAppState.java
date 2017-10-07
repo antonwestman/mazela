@@ -73,6 +73,14 @@ public class KeyboardInputAppState extends AbstractAppState {
         inputManager.removeListener(keyboardListener);
         super.cleanup();
     }
+    
+    private void clearState() {
+        this.needsUpdate.set(false);
+        this.down.set(false);
+        this.up.set(false);
+        this.left.set(false);
+        this.right.set(false);
+    }
 
     @Override
     public void update(float tpf) {
@@ -90,12 +98,14 @@ public class KeyboardInputAppState extends AbstractAppState {
             );
             try {
                 this.networkClient.sendMessage(message);
-                this.needsUpdate.set(false);
+                clearState();
+                
             } catch (OutgoingQueueFullException | NotConnectedException ex) {
                 log.error("Unable to send keyboard message", ex);
             }
         }
         super.update(tpf);
+        
 
     }
 
