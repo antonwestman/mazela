@@ -39,6 +39,7 @@ public abstract class Encoder {
                                             .setY(update.getY())
                                             .build()
                             )
+                            .setRotation(update.getRotation())
                             .setState(0)
                             .setUuid(
                                     MazelaProtocol.Uuid

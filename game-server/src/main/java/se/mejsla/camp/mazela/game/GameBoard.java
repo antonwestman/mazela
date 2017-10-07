@@ -26,6 +26,7 @@ import nu.zoom.corridors.math.XORShiftRandom;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.dynamics.BodyFixture;
 import org.dyn4j.geometry.Circle;
+import org.dyn4j.geometry.Ellipse;
 import org.dyn4j.geometry.MassType;
 import org.dyn4j.geometry.Rectangle;
 import org.dyn4j.geometry.Vector2;
@@ -107,7 +108,7 @@ public class GameBoard {
             this.players.computeIfAbsent(Preconditions.checkNotNull(connectionID), c -> {
                 log.debug("Adding player {} to the board", connectionID);
                 final Body body = new Body();
-                final BodyFixture bodyFixture = new BodyFixture(new Circle(1.0));
+                final BodyFixture bodyFixture = new BodyFixture(new Ellipse(1, 1.67));
                 bodyFixture.setRestitution(BOUNCYNESS);
                 body.addFixture(bodyFixture);
                 body.setMass(MassType.NORMAL);
@@ -147,13 +148,16 @@ public class GameBoard {
     public List<EntityUpdate> snapshotGamestate() {
         final ArrayList<EntityUpdate> result = new ArrayList<>();
         players.forEach((id, player) -> {
-            Vector2 position = player.getPhysicsBody().getWorldCenter();
+            Body body = player.getPhysicsBody();
+            Vector2 position = body.getWorldCenter();
+            double rotation = body.getTransform().getRotation();
             log.debug("Position: " + position);
             result.add(
                     new EntityUpdate(
                             id.getUuid(),
                             (float) position.x,
-                            (float) position.y)
+                            (float) position.y,
+                            (float) rotation)   
             );
         });
         return result;

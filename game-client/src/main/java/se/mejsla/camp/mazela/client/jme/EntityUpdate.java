@@ -26,12 +26,14 @@ public class EntityUpdate {
     private final UUID entityID;
     private final float x;
     private final float y;
+    private final float rotation;
     private final int state;
 
-    public EntityUpdate(UUID entityID, float x, float y, final int state) {
+    public EntityUpdate(UUID entityID, float x, float y, float rotation, final int state) {
         this.entityID = entityID;
         this.x = x;
         this.y = y;
+        this.rotation = rotation;
         this.state = state;
     }
 
@@ -45,5 +47,9 @@ public class EntityUpdate {
 
     public float getY() {
         return y;
+    }
+    
+    public float getRotation(){
+        return rotation;
     }
 }

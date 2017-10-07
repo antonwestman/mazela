@@ -154,6 +154,7 @@ public class ProtobufAppState extends AbstractAppState {
                                 ),
                                 update.getCoords().getX(),
                                 update.getCoords().getY(),
+                                update.getRotation(),
                                 update.getState()
                         );
                         pendingUpdates.add(pendingUpdate);

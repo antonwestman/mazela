@@ -24,11 +24,11 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Matrix3f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
-import com.jme3.scene.shape.Sphere;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -101,6 +101,7 @@ public class GameboardAppstate extends AbstractAppState {
                     gameObjects.put(entityUUID, gameObject);
                 }
                 gameObject.getNode().setLocalTranslation(transformCoordinatesFromServerToClient(pu));
+                gameObject.getNode().setLocalRotation(transformRotationFromServerToClient(pu));
 
                 updatedEntities.add(entityUUID);
             }
@@ -132,6 +133,13 @@ public class GameboardAppstate extends AbstractAppState {
                 pu.getY(),
                 Z_AXIS_OFFSET
         );
+    }
+    
+    private Matrix3f transformRotationFromServerToClient(EntityUpdate pu) {
+        log.debug("Frekiing rotatio {} fooz", pu.getRotation());
+        Matrix3f r = new Matrix3f();
+        r.fromAngleAxis(pu.getRotation(), Vector3f.UNIT_Z);
+        return r;
     }
 
 }

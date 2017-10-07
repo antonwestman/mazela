@@ -24,10 +24,11 @@ public class PlayerGeometry extends Geometry{
         this.assetManager = assetManager;
         initMesh();
         initMaterial();
+        this.setLocalScale(1, 1.67f, 1);
     }
     
     private void initMesh(){
-        this.mesh = new Sphere(32, 32, 1.0f);
+        this.mesh = new Sphere(32, 32, 0.5f);
     }
     
     private void initMaterial(){
@@ -36,8 +37,8 @@ public class PlayerGeometry extends Geometry{
                 "Common/MatDefs/Light/Lighting.j3md"
         );
         sphereMat.setBoolean("UseMaterialColors", true);
-        sphereMat.setColor("Diffuse", ColorRGBA.Red);
-        sphereMat.setColor("Ambient", ColorRGBA.Red);
+        sphereMat.setColor("Diffuse", ColorRGBA.White);
+        sphereMat.setColor("Ambient", ColorRGBA.Yellow);
         sphereMat.setColor("Specular", ColorRGBA.White);
         sphereMat.setFloat("Shininess", 64f);  // [0,128]
         this.material = sphereMat;

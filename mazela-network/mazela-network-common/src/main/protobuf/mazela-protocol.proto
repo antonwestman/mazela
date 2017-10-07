@@ -29,6 +29,7 @@ message GameboardUpdate {
     message EntityUpdate {
         Uuid uuid = 1;
         Coordinate coords = 2;
+        float rotation = 3 ;
         int32 state = 6 ;
     }
     repeated EntityUpdate updates = 1 ;

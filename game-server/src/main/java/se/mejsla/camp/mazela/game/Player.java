@@ -17,11 +17,9 @@ package se.mejsla.camp.mazela.game;
 
 import com.google.common.base.Preconditions;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 import org.dyn4j.dynamics.Body;
 import org.dyn4j.geometry.Mass;
 import org.dyn4j.geometry.Vector2;
-import se.mejsla.camp.mazela.network.common.protos.MazelaProtocol;
 
 /**
  *

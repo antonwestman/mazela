@@ -3007,6 +3007,11 @@ public final class MazelaProtocol {
       se.mejsla.camp.mazela.network.common.protos.MazelaProtocol.GameboardUpdate.CoordinateOrBuilder getCoordsOrBuilder();
 
       /**
+       * <code>float rotation = 3;</code>
+       */
+      float getRotation();
+
+      /**
        * <code>int32 state = 6;</code>
        */
       int getState();
@@ -3024,6 +3029,7 @@ public final class MazelaProtocol {
         super(builder);
       }
       private EntityUpdate() {
+        rotation_ = 0F;
         state_ = 0;
       }
 
@@ -3079,6 +3085,11 @@ public final class MazelaProtocol {
                   coords_ = subBuilder.buildPartial();
                 }
 
+                break;
+              }
+              case 29: {
+
+                rotation_ = input.readFloat();
                 break;
               }
               case 48: {
@@ -3152,6 +3163,15 @@ public final class MazelaProtocol {
         return getCoords();
       }
 
+      public static final int ROTATION_FIELD_NUMBER = 3;
+      private float rotation_;
+      /**
+       * <code>float rotation = 3;</code>
+       */
+      public float getRotation() {
+        return rotation_;
+      }
+
       public static final int STATE_FIELD_NUMBER = 6;
       private int state_;
       /**
@@ -3179,6 +3199,9 @@ public final class MazelaProtocol {
         if (coords_ != null) {
           output.writeMessage(2, getCoords());
         }
+        if (rotation_ != 0F) {
+          output.writeFloat(3, rotation_);
+        }
         if (state_ != 0) {
           output.writeInt32(6, state_);
         }
@@ -3197,6 +3220,10 @@ public final class MazelaProtocol {
         if (coords_ != null) {
           size += com.google.protobuf.CodedOutputStream
             .computeMessageSize(2, getCoords());
+        }
+        if (rotation_ != 0F) {
+          size += com.google.protobuf.CodedOutputStream
+            .computeFloatSize(3, rotation_);
         }
         if (state_ != 0) {
           size += com.google.protobuf.CodedOutputStream
@@ -3228,6 +3255,10 @@ public final class MazelaProtocol {
           result = result && getCoords()
               .equals(other.getCoords());
         }
+        result = result && (
+            java.lang.Float.floatToIntBits(getRotation())
+            == java.lang.Float.floatToIntBits(
+                other.getRotation()));
         result = result && (getState()
             == other.getState());
         result = result && unknownFields.equals(other.unknownFields);
@@ -3249,6 +3280,9 @@ public final class MazelaProtocol {
           hash = (37 * hash) + COORDS_FIELD_NUMBER;
           hash = (53 * hash) + getCoords().hashCode();
         }
+        hash = (37 * hash) + ROTATION_FIELD_NUMBER;
+        hash = (53 * hash) + java.lang.Float.floatToIntBits(
+            getRotation());
         hash = (37 * hash) + STATE_FIELD_NUMBER;
         hash = (53 * hash) + getState();
         hash = (29 * hash) + unknownFields.hashCode();
@@ -3392,6 +3426,8 @@ public final class MazelaProtocol {
             coords_ = null;
             coordsBuilder_ = null;
           }
+          rotation_ = 0F;
+
           state_ = 0;
 
           return this;
@@ -3426,6 +3462,7 @@ public final class MazelaProtocol {
           } else {
             result.coords_ = coordsBuilder_.build();
           }
+          result.rotation_ = rotation_;
           result.state_ = state_;
           onBuilt();
           return result;
@@ -3473,6 +3510,9 @@ public final class MazelaProtocol {
           }
           if (other.hasCoords()) {
             mergeCoords(other.getCoords());
+          }
+          if (other.getRotation() != 0F) {
+            setRotation(other.getRotation());
           }
           if (other.getState() != 0) {
             setState(other.getState());
@@ -3736,6 +3776,32 @@ public final class MazelaProtocol {
             coords_ = null;
           }
           return coordsBuilder_;
+        }
+
+        private float rotation_ ;
+        /**
+         * <code>float rotation = 3;</code>
+         */
+        public float getRotation() {
+          return rotation_;
+        }
+        /**
+         * <code>float rotation = 3;</code>
+         */
+        public Builder setRotation(float value) {
+          
+          rotation_ = value;
+          onChanged();
+          return this;
+        }
+        /**
+         * <code>float rotation = 3;</code>
+         */
+        public Builder clearRotation() {
+          
+          rotation_ = 0F;
+          onChanged();
+          return this;
         }
 
         private int state_ ;
@@ -6982,34 +7048,35 @@ public final class MazelaProtocol {
       "tionReply\022\025\n\rauthenticated\030\001 \001(\010\022?\n\004uuid" +
       "\030\002 \001(\01321.se.mejsla.camp.mazela.network.c" +
       "ommon.protos.Uuid\"\036\n\nJoinPlayer\022\020\n\010nickn" +
-      "ame\030\001 \001(\t\"\313\002\n\017GameboardUpdate\022Z\n\007updates" +
+      "ame\030\001 \001(\t\"\335\002\n\017GameboardUpdate\022Z\n\007updates" +
       "\030\001 \003(\0132I.se.mejsla.camp.mazela.network.c",
       "ommon.protos.GameboardUpdate.EntityUpdat" +
-      "e\032\"\n\nCoordinate\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\032\267\001" +
+      "e\032\"\n\nCoordinate\022\t\n\001x\030\001 \001(\002\022\t\n\001y\030\002 \001(\002\032\311\001" +
       "\n\014EntityUpdate\022?\n\004uuid\030\001 \001(\01321.se.mejsla" +
       ".camp.mazela.network.common.protos.Uuid\022" +
       "W\n\006coords\030\002 \001(\0132G.se.mejsla.camp.mazela." +
       "network.common.protos.GameboardUpdate.Co" +
-      "ordinate\022\r\n\005state\030\006 \001(\005\"R\n\013ClientInput\022\n" +
-      "\n\002up\030\001 \001(\010\022\014\n\004down\030\002 \001(\010\022\014\n\004left\030\003 \001(\010\022\r" +
-      "\n\005right\030\004 \001(\010\022\014\n\004jump\030\005 \001(\010\"\247\005\n\010Envelope" +
-      "\022W\n\014message_type\030\001 \001(\0162A.se.mejsla.camp.",
-      "mazela.network.common.protos.Envelope.Me" +
-      "ssageType\022b\n\026authentication_request\030\002 \001(" +
-      "\0132@.se.mejsla.camp.mazela.network.common" +
-      ".protos.AuthenticateRequestH\000\022`\n\024authent" +
-      "ication_reply\030\003 \001(\0132@.se.mejsla.camp.maz" +
-      "ela.network.common.protos.Authentication" +
-      "ReplyH\000\022N\n\013join_player\030\004 \001(\01327.se.mejsla" +
-      ".camp.mazela.network.common.protos.JoinP" +
-      "layerH\000\022X\n\020gameboard_update\030\005 \001(\0132<.se.m" +
-      "ejsla.camp.mazela.network.common.protos.",
-      "GameboardUpdateH\000\022P\n\014client_input\030\006 \001(\0132" +
-      "8.se.mejsla.camp.mazela.network.common.p" +
-      "rotos.ClientInputH\000\"u\n\013MessageType\022\027\n\023Au" +
-      "thenticateRequest\020\000\022\027\n\023AuthenticationRep" +
-      "ly\020\001\022\016\n\nJoinPlayer\020\002\022\023\n\017GameboardUpdate\020" +
-      "\003\022\017\n\013ClientInput\020\004B\t\n\007contentb\006proto3"
+      "ordinate\022\020\n\010rotation\030\003 \001(\002\022\r\n\005state\030\006 \001(" +
+      "\005\"R\n\013ClientInput\022\n\n\002up\030\001 \001(\010\022\014\n\004down\030\002 \001" +
+      "(\010\022\014\n\004left\030\003 \001(\010\022\r\n\005right\030\004 \001(\010\022\014\n\004jump\030" +
+      "\005 \001(\010\"\247\005\n\010Envelope\022W\n\014message_type\030\001 \001(\016",
+      "2A.se.mejsla.camp.mazela.network.common." +
+      "protos.Envelope.MessageType\022b\n\026authentic" +
+      "ation_request\030\002 \001(\0132@.se.mejsla.camp.maz" +
+      "ela.network.common.protos.AuthenticateRe" +
+      "questH\000\022`\n\024authentication_reply\030\003 \001(\0132@." +
+      "se.mejsla.camp.mazela.network.common.pro" +
+      "tos.AuthenticationReplyH\000\022N\n\013join_player" +
+      "\030\004 \001(\01327.se.mejsla.camp.mazela.network.c" +
+      "ommon.protos.JoinPlayerH\000\022X\n\020gameboard_u" +
+      "pdate\030\005 \001(\0132<.se.mejsla.camp.mazela.netw",
+      "ork.common.protos.GameboardUpdateH\000\022P\n\014c" +
+      "lient_input\030\006 \001(\01328.se.mejsla.camp.mazel" +
+      "a.network.common.protos.ClientInputH\000\"u\n" +
+      "\013MessageType\022\027\n\023AuthenticateRequest\020\000\022\027\n" +
+      "\023AuthenticationReply\020\001\022\016\n\nJoinPlayer\020\002\022\023" +
+      "\n\017GameboardUpdate\020\003\022\017\n\013ClientInput\020\004B\t\n\007" +
+      "contentb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7064,7 +7131,7 @@ public final class MazelaProtocol {
     internal_static_se_mejsla_camp_mazela_network_common_protos_GameboardUpdate_EntityUpdate_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_se_mejsla_camp_mazela_network_common_protos_GameboardUpdate_EntityUpdate_descriptor,
-        new java.lang.String[] { "Uuid", "Coords", "State", });
+        new java.lang.String[] { "Uuid", "Coords", "Rotation", "State", });
     internal_static_se_mejsla_camp_mazela_network_common_protos_ClientInput_descriptor =
       getDescriptor().getMessageTypes().get(5);
     internal_static_se_mejsla_camp_mazela_network_common_protos_ClientInput_fieldAccessorTable = new
