@@ -35,7 +35,7 @@ public class Player {
     private final AtomicBoolean jump = new AtomicBoolean(false);
     private final AtomicBoolean needsUpdate = new AtomicBoolean(false);
     
-    private final float JUMP_FORCE_MULTIPLIER = 5;
+    private final float JUMP_FORCE_MULTIPLIER = 10;
 
     public Player(final Body physicsBody) {
         this.physicsBody = Preconditions.checkNotNull(physicsBody);
@@ -60,13 +60,23 @@ public class Player {
             force.add(0, -tpf);
         }
         if (this.jump.get()) {
-            if (this.physicsBody.getTransform().getTranslationY() < baseLineY + 1) {
-                force.add(0, tpf * JUMP_FORCE_MULTIPLIER); 
+            if (this.physicsBody.getTransform().getTranslationY() < baseLineY + 0.5) {
+                force.add(getJumpForce(tpf)); 
             }
         }
         force.multiply(200);
         this.physicsBody.applyForce(force);
         setInput(false,false,false,false,false);
+    }
+    
+    private Vector2 getJumpForce(float tpf){
+        double rotation = this.physicsBody.getTransform().getRotation();
+        Vector2 direction = new Vector2(0,1).rotate(rotation);
+        Vector2 jumpForce = direction.multiply(tpf * JUMP_FORCE_MULTIPLIER);
+        if (jumpForce.y < 0) {
+            jumpForce.multiply(-1);
+        }
+        return jumpForce;
     }
 
     public Body getPhysicsBody() {

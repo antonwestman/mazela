@@ -109,6 +109,7 @@ public class GameBoard {
                 log.debug("Adding player {} to the board", connectionID);
                 final Body body = new Body();
                 final BodyFixture bodyFixture = new BodyFixture(new Ellipse(1, 1.67));
+                bodyFixture.setFriction(3);
                 bodyFixture.setRestitution(BOUNCYNESS);
                 body.addFixture(bodyFixture);
                 body.setMass(MassType.NORMAL);
