@@ -38,6 +38,8 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import se.mejsla.camp.mazela.client.jme.gameobject.GameObject;
+import se.mejsla.camp.mazela.client.jme.gameobject.Player;
 
 /**
  *
@@ -47,7 +49,7 @@ public class GameboardAppstate extends AbstractAppState {
 
     private final float Z_AXIS_OFFSET = -40.0f;
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final HashMap<UUID, Node> entityNodes = new HashMap<>();
+    private final HashMap<UUID, GameObject> gameObjects = new HashMap<>();
     private AssetManager assetManager;
     private List<EntityUpdate> pendingUpdates = null;
     private Node rootNode;
@@ -91,45 +93,30 @@ public class GameboardAppstate extends AbstractAppState {
             ArrayList<UUID> updatedEntities = new ArrayList<>();
             for (EntityUpdate pu : this.pendingUpdates) {
                 final UUID entityUUID = pu.getEntityID();
-                Node playerNode = this.entityNodes.get(entityUUID);
-                if (playerNode == null) {
+                GameObject gameObject = this.gameObjects.get(entityUUID);
+                if (gameObject == null) {
                     // New player
-                    final Geometry geom = new Geometry(
-                            entityUUID.toString() + "-geom",
-                            new Sphere(32, 32, 1.0f)
-                    );
-                    final Material sphereMat = new Material(
-                            assetManager,
-                            "Common/MatDefs/Light/Lighting.j3md"
-                    );
-                    sphereMat.setBoolean("UseMaterialColors", true);
-                    sphereMat.setColor("Diffuse", ColorRGBA.Red);
-                    sphereMat.setColor("Ambient", ColorRGBA.Red);
-                    sphereMat.setColor("Specular", ColorRGBA.White);
-                    sphereMat.setFloat("Shininess", 64f);  // [0,128]
-                    geom.setMaterial(sphereMat);
-                    playerNode = new Node(entityUUID.toString());
-                    playerNode.attachChild(geom);
+                    gameObject = new Player(entityUUID.toString(), assetManager);
                     log.debug("Attaching player {} node", entityUUID);
-                    rootNode.attachChild(playerNode);
-                    entityNodes.put(entityUUID, playerNode);
+                    entityNode.attachChild(gameObject.getNode());
+                    gameObjects.put(entityUUID, gameObject);
                 }
-                playerNode.setLocalTranslation(transformCoordinatesFromServerToClient(pu));
+                gameObject.getNode().setLocalTranslation(transformCoordinatesFromServerToClient(pu));
 
                 updatedEntities.add(entityUUID);
             }
 
             // remove entities that was not included in the update
-            final Set<UUID> entitiesToRemove = entityNodes
+            final Set<UUID> entitiesToRemove = gameObjects
                     .keySet()
                     .stream()
                     .filter(knownEntityUUID -> !updatedEntities.contains(knownEntityUUID))
                     .collect(Collectors.toSet());
             entitiesToRemove.forEach(e -> {
-                final Node nodeToRemove = entityNodes.remove(e);
-                if (nodeToRemove != null) {
-                    nodeToRemove.detachAllChildren();
-                    this.entityNode.detachChild(nodeToRemove);
+                final GameObject gameObjectToRemove = gameObjects.remove(e);
+                if (gameObjectToRemove != null) {
+                    gameObjectToRemove.getNode().detachAllChildren();
+                    this.entityNode.detachChild(gameObjectToRemove.getNode());
                 }
             });
             pendingUpdates = null;
