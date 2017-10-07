@@ -4481,6 +4481,11 @@ public final class MazelaProtocol {
      * <code>bool right = 4;</code>
      */
     boolean getRight();
+
+    /**
+     * <code>bool jump = 5;</code>
+     */
+    boolean getJump();
   }
   /**
    * Protobuf type {@code se.mejsla.camp.mazela.network.common.protos.ClientInput}
@@ -4499,6 +4504,7 @@ public final class MazelaProtocol {
       down_ = false;
       left_ = false;
       right_ = false;
+      jump_ = false;
     }
 
     @java.lang.Override
@@ -4547,6 +4553,11 @@ public final class MazelaProtocol {
             case 32: {
 
               right_ = input.readBool();
+              break;
+            }
+            case 40: {
+
+              jump_ = input.readBool();
               break;
             }
           }
@@ -4609,6 +4620,15 @@ public final class MazelaProtocol {
       return right_;
     }
 
+    public static final int JUMP_FIELD_NUMBER = 5;
+    private boolean jump_;
+    /**
+     * <code>bool jump = 5;</code>
+     */
+    public boolean getJump() {
+      return jump_;
+    }
+
     private byte memoizedIsInitialized = -1;
     public final boolean isInitialized() {
       byte isInitialized = memoizedIsInitialized;
@@ -4632,6 +4652,9 @@ public final class MazelaProtocol {
       }
       if (right_ != false) {
         output.writeBool(4, right_);
+      }
+      if (jump_ != false) {
+        output.writeBool(5, jump_);
       }
       unknownFields.writeTo(output);
     }
@@ -4657,6 +4680,10 @@ public final class MazelaProtocol {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(4, right_);
       }
+      if (jump_ != false) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeBoolSize(5, jump_);
+      }
       size += unknownFields.getSerializedSize();
       memoizedSize = size;
       return size;
@@ -4681,6 +4708,8 @@ public final class MazelaProtocol {
           == other.getLeft());
       result = result && (getRight()
           == other.getRight());
+      result = result && (getJump()
+          == other.getJump());
       result = result && unknownFields.equals(other.unknownFields);
       return result;
     }
@@ -4704,6 +4733,9 @@ public final class MazelaProtocol {
       hash = (37 * hash) + RIGHT_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getRight());
+      hash = (37 * hash) + JUMP_FIELD_NUMBER;
+      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
+          getJump());
       hash = (29 * hash) + unknownFields.hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -4841,6 +4873,8 @@ public final class MazelaProtocol {
 
         right_ = false;
 
+        jump_ = false;
+
         return this;
       }
 
@@ -4867,6 +4901,7 @@ public final class MazelaProtocol {
         result.down_ = down_;
         result.left_ = left_;
         result.right_ = right_;
+        result.jump_ = jump_;
         onBuilt();
         return result;
       }
@@ -4919,6 +4954,9 @@ public final class MazelaProtocol {
         }
         if (other.getRight() != false) {
           setRight(other.getRight());
+        }
+        if (other.getJump() != false) {
+          setJump(other.getJump());
         }
         this.mergeUnknownFields(other.unknownFields);
         onChanged();
@@ -5047,6 +5085,32 @@ public final class MazelaProtocol {
       public Builder clearRight() {
         
         right_ = false;
+        onChanged();
+        return this;
+      }
+
+      private boolean jump_ ;
+      /**
+       * <code>bool jump = 5;</code>
+       */
+      public boolean getJump() {
+        return jump_;
+      }
+      /**
+       * <code>bool jump = 5;</code>
+       */
+      public Builder setJump(boolean value) {
+        
+        jump_ = value;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>bool jump = 5;</code>
+       */
+      public Builder clearJump() {
+        
+        jump_ = false;
         onChanged();
         return this;
       }
@@ -6926,26 +6990,26 @@ public final class MazelaProtocol {
       ".camp.mazela.network.common.protos.Uuid\022" +
       "W\n\006coords\030\002 \001(\0132G.se.mejsla.camp.mazela." +
       "network.common.protos.GameboardUpdate.Co" +
-      "ordinate\022\r\n\005state\030\006 \001(\005\"D\n\013ClientInput\022\n" +
+      "ordinate\022\r\n\005state\030\006 \001(\005\"R\n\013ClientInput\022\n" +
       "\n\002up\030\001 \001(\010\022\014\n\004down\030\002 \001(\010\022\014\n\004left\030\003 \001(\010\022\r" +
-      "\n\005right\030\004 \001(\010\"\247\005\n\010Envelope\022W\n\014message_ty" +
-      "pe\030\001 \001(\0162A.se.mejsla.camp.mazela.network",
-      ".common.protos.Envelope.MessageType\022b\n\026a" +
-      "uthentication_request\030\002 \001(\0132@.se.mejsla." +
-      "camp.mazela.network.common.protos.Authen" +
-      "ticateRequestH\000\022`\n\024authentication_reply\030" +
-      "\003 \001(\0132@.se.mejsla.camp.mazela.network.co" +
-      "mmon.protos.AuthenticationReplyH\000\022N\n\013joi" +
-      "n_player\030\004 \001(\01327.se.mejsla.camp.mazela.n" +
-      "etwork.common.protos.JoinPlayerH\000\022X\n\020gam" +
-      "eboard_update\030\005 \001(\0132<.se.mejsla.camp.maz" +
-      "ela.network.common.protos.GameboardUpdat",
-      "eH\000\022P\n\014client_input\030\006 \001(\01328.se.mejsla.ca" +
-      "mp.mazela.network.common.protos.ClientIn" +
-      "putH\000\"u\n\013MessageType\022\027\n\023AuthenticateRequ" +
-      "est\020\000\022\027\n\023AuthenticationReply\020\001\022\016\n\nJoinPl" +
-      "ayer\020\002\022\023\n\017GameboardUpdate\020\003\022\017\n\013ClientInp" +
-      "ut\020\004B\t\n\007contentb\006proto3"
+      "\n\005right\030\004 \001(\010\022\014\n\004jump\030\005 \001(\010\"\247\005\n\010Envelope" +
+      "\022W\n\014message_type\030\001 \001(\0162A.se.mejsla.camp.",
+      "mazela.network.common.protos.Envelope.Me" +
+      "ssageType\022b\n\026authentication_request\030\002 \001(" +
+      "\0132@.se.mejsla.camp.mazela.network.common" +
+      ".protos.AuthenticateRequestH\000\022`\n\024authent" +
+      "ication_reply\030\003 \001(\0132@.se.mejsla.camp.maz" +
+      "ela.network.common.protos.Authentication" +
+      "ReplyH\000\022N\n\013join_player\030\004 \001(\01327.se.mejsla" +
+      ".camp.mazela.network.common.protos.JoinP" +
+      "layerH\000\022X\n\020gameboard_update\030\005 \001(\0132<.se.m" +
+      "ejsla.camp.mazela.network.common.protos.",
+      "GameboardUpdateH\000\022P\n\014client_input\030\006 \001(\0132" +
+      "8.se.mejsla.camp.mazela.network.common.p" +
+      "rotos.ClientInputH\000\"u\n\013MessageType\022\027\n\023Au" +
+      "thenticateRequest\020\000\022\027\n\023AuthenticationRep" +
+      "ly\020\001\022\016\n\nJoinPlayer\020\002\022\023\n\017GameboardUpdate\020" +
+      "\003\022\017\n\013ClientInput\020\004B\t\n\007contentb\006proto3"
     };
     com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
         new com.google.protobuf.Descriptors.FileDescriptor.    InternalDescriptorAssigner() {
@@ -7006,7 +7070,7 @@ public final class MazelaProtocol {
     internal_static_se_mejsla_camp_mazela_network_common_protos_ClientInput_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessageV3.FieldAccessorTable(
         internal_static_se_mejsla_camp_mazela_network_common_protos_ClientInput_descriptor,
-        new java.lang.String[] { "Up", "Down", "Left", "Right", });
+        new java.lang.String[] { "Up", "Down", "Left", "Right", "Jump", });
     internal_static_se_mejsla_camp_mazela_network_common_protos_Envelope_descriptor =
       getDescriptor().getMessageTypes().get(6);
     internal_static_se_mejsla_camp_mazela_network_common_protos_Envelope_fieldAccessorTable = new

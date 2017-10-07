@@ -45,6 +45,7 @@ public class KeyboardInputAppState extends AbstractAppState {
     private final AtomicBoolean down = new AtomicBoolean(false);
     private final AtomicBoolean left = new AtomicBoolean(false);
     private final AtomicBoolean right = new AtomicBoolean(false);
+    private final AtomicBoolean jump = new AtomicBoolean(false);
     private final AtomicBoolean needsUpdate = new AtomicBoolean(false);
     private KeyboardListener keyboardListener;
 
@@ -59,8 +60,9 @@ public class KeyboardInputAppState extends AbstractAppState {
         inputManager.addMapping("Right", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Up", new KeyTrigger(KeyInput.KEY_W));
         inputManager.addMapping("Down", new KeyTrigger(KeyInput.KEY_S));
+        inputManager.addMapping("Jump", new KeyTrigger(KeyInput.KEY_J));
         keyboardListener = new KeyboardListener();
-        inputManager.addListener(keyboardListener, "Left", "Right", "Up", "Down");
+        inputManager.addListener(keyboardListener, "Left", "Right", "Up", "Down", "Jump");
         super.initialize(stateManager, app);
     }
 
@@ -70,6 +72,7 @@ public class KeyboardInputAppState extends AbstractAppState {
         inputManager.deleteMapping("Right");
         inputManager.deleteMapping("Up");
         inputManager.deleteMapping("Down");
+        inputManager.deleteMapping("Jump");
         inputManager.removeListener(keyboardListener);
         super.cleanup();
     }
@@ -80,6 +83,7 @@ public class KeyboardInputAppState extends AbstractAppState {
         this.up.set(false);
         this.left.set(false);
         this.right.set(false);
+        this.jump.set(false);
     }
 
     @Override
@@ -92,7 +96,8 @@ public class KeyboardInputAppState extends AbstractAppState {
                                     .setDown(this.down.get())
                                     .setUp(this.up.get())
                                     .setLeft(this.left.get())
-                                    .setRight(this.right.get()))
+                                    .setRight(this.right.get())
+                                    .setJump(this.jump.get()))
                             .setMessageType(MazelaProtocol.Envelope.MessageType.ClientInput)
                             .build().toByteArray()
             );
@@ -129,6 +134,10 @@ public class KeyboardInputAppState extends AbstractAppState {
                     break;
                 case "Down":
                     down.set(true);
+                    needsUpdate.set(true);
+                    break;
+                case "Jump":
+                    jump.set(true);
                     needsUpdate.set(true);
                     break;
             }

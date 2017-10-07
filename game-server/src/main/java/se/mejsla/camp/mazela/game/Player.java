@@ -19,6 +19,7 @@ import com.google.common.base.Preconditions;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import org.dyn4j.dynamics.Body;
+import org.dyn4j.geometry.Mass;
 import org.dyn4j.geometry.Vector2;
 import se.mejsla.camp.mazela.network.common.protos.MazelaProtocol;
 
@@ -33,13 +34,17 @@ public class Player {
     private final AtomicBoolean down = new AtomicBoolean(false);
     private final AtomicBoolean left = new AtomicBoolean(false);
     private final AtomicBoolean right = new AtomicBoolean(false);
+    private final AtomicBoolean jump = new AtomicBoolean(false);
     private final AtomicBoolean needsUpdate = new AtomicBoolean(false);
+    
+    private final float JUMP_FORCE_MULTIPLIER = 5;
 
     public Player(final Body physicsBody) {
         this.physicsBody = Preconditions.checkNotNull(physicsBody);
+        this.physicsBody.setMass(new Mass(new Vector2(0,0), 1, 1));
     }
 
-    public void update(final float tpf) {
+    public void update(final float tpf, final double baseLineY) {
         Vector2 force = new Vector2(0, 0);
         if (this.needsUpdate.get()) {
             this.needsUpdate.set(false);
@@ -56,8 +61,14 @@ public class Player {
         if (this.down.get()) {
             force.add(0, -tpf);
         }
+        if (this.jump.get()) {
+            if (this.physicsBody.getTransform().getTranslationY() < baseLineY + 1) {
+                force.add(0, tpf * JUMP_FORCE_MULTIPLIER); 
+            }
+        }
         force.multiply(200);
         this.physicsBody.applyForce(force);
+        setInput(false,false,false,false,false);
     }
 
     public Body getPhysicsBody() {
@@ -68,11 +79,13 @@ public class Player {
             final boolean left,
             final boolean right,
             final boolean up,
-            final boolean down) {
+            final boolean down,
+            final boolean jump) {
         this.up.set(up);
         this.down.set(down);
         this.left.set(left);
         this.right.set(right);
+        this.jump.set(jump);
         this.needsUpdate.set(true);
     }
 }

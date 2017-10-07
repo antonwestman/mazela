@@ -45,7 +45,7 @@ public class GameBoard {
     private static final double PLAYER_INITAL_AREA_HEIGHT = 10;
     private static final double WORLD_BOUNDS_WIDTH = 20;
     private static final double WORLD_BOUNDS_HEIGHT = 20;
-    private static final double BOUNCYNESS = 0.9;
+    private static final double BOUNCYNESS = 0.05;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final XORShiftRandom fastRandom = new XORShiftRandom(System.currentTimeMillis());
@@ -97,6 +97,10 @@ public class GameBoard {
             this.pendingPlayerDeletes.add(connectionID);
         }
     }
+    
+    private double getBaseLineY(){
+        return -(PLAYER_INITAL_AREA_HEIGHT / 2 - 0.5);
+    }
 
     private void addPendingPlayers() {
         for (ConnectionID connectionID : this.pendingPlayerAdds) {
@@ -108,7 +112,7 @@ public class GameBoard {
                 body.addFixture(bodyFixture);
                 body.setMass(MassType.NORMAL);
                 double initialX = this.fastRandom.unitRandom() * PLAYER_INITAL_AREA_WIDTH - (PLAYER_INITAL_AREA_WIDTH / 2);
-                double initialY = (PLAYER_INITAL_AREA_HEIGHT / 2) - 1.0;
+                double initialY = getBaseLineY();
                 body.getTransform().translate(initialX, initialY);
                 this.physicsSpace.getWorld().addBody(body);
                 return new Player(body);
@@ -136,7 +140,7 @@ public class GameBoard {
         this.physicsSpace.tick(tpf);
 
         for (Player p : players.values()) {
-            p.update(tpf);
+            p.update(tpf, getBaseLineY());
         }
     }
 
@@ -173,7 +177,8 @@ public class GameBoard {
                         clientInput.getLeft(),
                         clientInput.getRight(),
                         clientInput.getUp(),
-                        clientInput.getDown()
+                        clientInput.getDown(),
+                        clientInput.getJump()
                 );
             }
         }
