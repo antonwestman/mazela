@@ -35,11 +35,11 @@ public class Player {
     private final AtomicBoolean jump = new AtomicBoolean(false);
     private final AtomicBoolean needsUpdate = new AtomicBoolean(false);
     
-    private final float JUMP_FORCE_MULTIPLIER = 10;
+    private final float JUMP_FORCE_MULTIPLIER = 20;
 
     public Player(final Body physicsBody) {
         this.physicsBody = Preconditions.checkNotNull(physicsBody);
-        this.physicsBody.setMass(new Mass(new Vector2(0,0), 1, 1));
+        this.physicsBody.setMass(new Mass(new Vector2(0,0), 1, 0.1));
     }
 
     public void update(final float tpf, final double baseLineY) {
@@ -76,6 +76,7 @@ public class Player {
         if (jumpForce.y < 0) {
             jumpForce.multiply(-1);
         }
+        jumpForce.x /= 3; 
         return jumpForce;
     }
 

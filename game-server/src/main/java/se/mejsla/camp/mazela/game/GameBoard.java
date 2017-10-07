@@ -46,7 +46,7 @@ public class GameBoard {
     private static final double PLAYER_INITAL_AREA_HEIGHT = 10;
     private static final double WORLD_BOUNDS_WIDTH = 20;
     private static final double WORLD_BOUNDS_HEIGHT = 20;
-    private static final double BOUNCYNESS = 0.05;
+    private static final double BOUNCYNESS = 0.2;
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final XORShiftRandom fastRandom = new XORShiftRandom(System.currentTimeMillis());
